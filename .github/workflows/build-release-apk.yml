@@ -37,6 +37,18 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Validate manual release tag
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.create_release }}
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.tag_name }}
+        run: |
+          set -euo pipefail
+          if [[ "$RELEASE_TAG" != v* ]] || ! git check-ref-format "refs/tags/$RELEASE_TAG"; then
+            echo "::error::Manual publication requires a valid tag_name starting with v, such as v1.0.0."
+            exit 1
+          fi
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -77,6 +89,8 @@ jobs:
 
       - name: Prepare Release Artifacts
         run: |
+          set -euo pipefail
+          test -s app/build/outputs/apk/release/app-release.apk
           mkdir -p artifacts
           cp app/build/outputs/apk/release/app-release.apk artifacts/FermataEX-release.apk
 
@@ -89,10 +103,12 @@ jobs:
           retention-days: 30
 
       - name: Create GitHub Release
-        if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == true }}
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.create_release) }}
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/FermataEX-release.apk
-          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
-          name: Release ${{ github.event.inputs.tag_name || github.ref_name }}
+          tag_name: ${{ inputs.tag_name || github.ref_name }}
+          name: Release ${{ inputs.tag_name || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          fail_on_unmatched_files: true
           generate_release_notes: true
