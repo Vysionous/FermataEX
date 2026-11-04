@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+import argparse
+import collections
+import datetime
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import tempfile
+import xml.etree.ElementTree as ET
+
+parser = argparse.ArgumentParser(description="Repair FermataEX branding, default English resources, and nullable preference text tint.")
+parser.add_argument('--apply', action='store_true', help='Write validated changes; otherwise preview only.')
+args = parser.parse_args()
+root = Path(subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
+paths = {
+    'gradle': root / 'app/build.gradle',
+    'java': root / 'depends/utils/src/main/java/me/aap/utils/pref/PreferenceView.java',
+    'target': root / 'app/src/main/res/values/strings.xml',
+    'english': root / 'fermata/src/main/res/values/strings.xml',
+}
+for path in paths.values():
+    if not path.is_file():
+        raise SystemExit(f'Required file missing: {path}')
+texts = {key: path.read_text(encoding='utf-8') for key, path in paths.items()}
+pattern = re.compile(r'(?P<open><string\b[^>]*\bname="(?P<name>[^"]+)"[^>]*>)(?P<body>.*?)(?P<close></string>)', re.S)
+def entries(text):
+    parsed = ET.fromstring(text)
+    names = [node.get('name') for node in parsed.findall('string')]
+    duplicates = [name for name, count in collections.Counter(names).items() if count > 1]
+    if duplicates:
+        raise SystemExit(f'Duplicate string names: {duplicates}')
+    result = {m['name']: m for m in pattern.finditer(text)}
+    if set(result) != set(names):
+        raise SystemExit('Unexpected string XML syntax; no files changed.')
+    return result
+english = entries(texts['english'])
+target = entries(texts['target'])
+brand = {name: 'FermataEX' for name in (
+    'app_name', 'app_name_auto', 'app_name_mobile',
+    'app_name_auto_debug', 'app_name_mobile_debug',
+    'app_name_auto_release', 'app_name_mobile_release')}
+brand.update({name: 'FermataEX Media Service' for name in (
+    'media_service_name', 'media_service_name_auto', 'media_service_name_mobile',
+    'media_service_name_auto_debug', 'media_service_name_mobile_debug',
+    'media_service_name_auto_release', 'media_service_name_mobile_release')})
+brand.update({name: 'FermataEX Mirror Service' for name in (
+    'mirror_service_name', 'mirror_service_name_debug', 'mirror_service_name_release')})
+constant = {'ok': 'OK'}
+missing = sorted(set(target) - set(english) - set(brand) - set(constant))
+if missing:
+    raise SystemExit('No English counterpart for these target strings; no files changed:\n' + '\n'.join(missing))
+format_pattern = re.compile(r'%(?:\d+\$)?[-#+ 0,(<]*\d*(?:\.\d+)?[a-zA-Z%]')
+def formats(body):
+    return collections.Counter(format_pattern.findall(body))
+def replace_string(match):
+    name = match['name']
+    if name in brand:
+        body = brand[name]
+    elif name in constant:
+        body = constant[name]
+    else:
+        body = english[name]['body']
+        if formats(body) != formats(match['body']):
+            raise SystemExit(f'Formatting placeholders differ for {name}; no files changed.')
+    return match['open'] + body + match['close']
+updated_strings = pattern.sub(replace_string, texts['target'])
+if set(entries(updated_strings)) != set(target):
+    raise SystemExit('String key preservation check failed.')
+java_old = 'v.setTextColor(textTint);'
+java_new = 'if (textTint != null) {\n\t\t\tv.setTextColor(textTint);\n\t\t}'
+if java_new in texts['java']:
+    updated_java = texts['java']
+elif texts['java'].count(java_old) == 1:
+    updated_java = texts['java'].replace(java_old, java_new)
+else:
+    raise SystemExit('Unexpected PreferenceView text-color code; no files changed.')
+self_reference = re.compile(r'^\s*resValue\s+["\']string["\']\s*,\s*["\'](?P<name>\w+)["\']\s*,\s*["\']@string/(?P=name)["\']\s*;?\s*$')
+gradle_lines = texts['gradle'].splitlines(keepends=True)
+removed = [line.strip() for line in gradle_lines if self_reference.match(line)]
+updated_gradle = ''.join(line for line in gradle_lines if not self_reference.match(line))
+if 'resValue "drawable", "media_service_icon", "@drawable/launcher"' in texts['gradle']:
+    assert 'resValue "drawable", "media_service_icon", "@drawable/launcher"' in updated_gradle
+updates = {
+    paths['gradle']: updated_gradle,
+    paths['java']: updated_java,
+    paths['target']: updated_strings,
+}
+# Branding must not change when an alternate UI language is selected.
+for directory in (root / 'app/src/main/res').glob('values*'):
+    if not directory.is_dir():
+        continue
+    for path in directory.glob('*.xml'):
+        original = updates.get(path, path.read_text(encoding='utf-8'))
+        def brand_only(match):
+            if match['name'] not in brand:
+                return match[0]
+            return match['open'] + brand[match['name']] + match['close']
+        updated = pattern.sub(brand_only, original)
+        if updated != original:
+            ET.fromstring(updated)
+            updates[path] = updated
+changed = {path: text for path, text in updates.items() if path.read_text(encoding='utf-8') != text}
+print(f'Validated {len(target)} default string keys; all original keys preserved.')
+print(f'Self-referencing Gradle strings removed: {len(removed)}')
+print(f'Files to change: {len(changed)}')
+for path in changed:
+    print('  ' + str(path.relative_to(root)))
+if not args.apply:
+    print('Preview only. Re-run with --apply to write these changes.')
+    raise SystemExit(0)
+if not changed:
+    print('No changes needed.')
+    raise SystemExit(0)
+backup = Path(tempfile.mkdtemp(prefix='fermataex-repair-backup-'))
+for path in changed:
+    destination = backup / path.relative_to(root)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(path, destination)
+try:
+    for path, text in changed.items():
+        path.write_text(text, encoding='utf-8')
+except Exception:
+    for path in changed:
+        shutil.copy2(backup / path.relative_to(root), path)
+    raise
+print(f'Changes applied. Original files backed up outside the repository: {backup}')
+print('No commit or push was performed. Build and device validation are still required.')
