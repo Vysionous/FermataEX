@@ -49,13 +49,13 @@ jobs:
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
       - name: Verify Java and Gradle toolchain
         run: |
           java -version
           ./gradlew --version
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
 
       - name: Prepare Keystore
         run: |
