@@ -131,7 +131,9 @@ public class PreferenceView extends ConstraintLayout {
 			v.setTextSize(COMPLEX_UNIT_PX, ta.getDimensionPixelSize(0, 0) * scale);
 			ta.recycle();
 		}
-		v.setTextColor(textTint);
+		if (textTint != null) {
+			v.setTextColor(textTint);
+		}
 	}
 
 	private void setFooterTextAppearance(Context ctx, float scale) {

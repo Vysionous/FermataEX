@@ -24,14 +24,7 @@ android {
         buildConfigField "boolean", 'AUTO', "false"
         buildConfigField "boolean", 'ENABLE_GS', "${gradle.ext.enableGoogleServices}"
 
-        resValue "string", "app_name", "@string/app_name"
-        resValue "string", "media_service_name", "@string/media_service_name"
         resValue "drawable", "media_service_icon", "@drawable/launcher"
-        resValue "string", "mirror_service_name", "@string/mirror_service_name"
-        resValue "string", "app_name_auto", "@string/app_name_auto"
-        resValue "string", "app_name_mobile", "@string/app_name_mobile"
-        resValue "string", "media_service_name_auto", "@string/media_service_name_auto"
-        resValue "string", "media_service_name_mobile", "@string/media_service_name_mobile"
     }
 
     signingConfigs {
