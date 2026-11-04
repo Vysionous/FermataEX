@@ -1,166 +1,63 @@
 [versions]
-# App
-appVersionCode = "331"
-appVersionName = "2.1"
-
-# Build tooling
-agp = "9.2.1"
-googleServices = "4.4.4"
-
-# SDK
-sdkMin = "28"
+agp = "9.1.1"
+googleServices = "4.4.2"
+appVersionCode = "1"
+appVersionName = "1.0.0"
+sdkMin = "24"
 sdkTarget = "36"
 sdkCompile = "36"
-
-# NDK
-ndkVersion = "29.0.14206865"
-
-# AndroidX
-androidxAnnotation = "1.10.0"
-androidxAppcompat = "1.7.1"
-androidxConstraintlayout = "2.2.1"
-androidxCore = "1.19.0"
-androidxFragment = "1.8.9"
-androidxLegacySupport = "1.0.0"
-androidxLocalbroadcastmanager = "1.1.0"
-androidxMedia = "1.8.0"
-androidxSecurityCrypto = "1.1.0"
-androidxSwiperefreshlayout = "1.2.0"
-androidxTvprovider = "1.1.0"
-androidxWebkit = "1.16.0"
-
-# AndroidX media3
-media3 = "1.10.1"
-
-# AndroidX Car
-androidxCar = "1.7.0"
-
-# Google
-androidMaterial = "1.14.0"
+androidMaterial = "1.12.0"
 googlePlayFeatureDelivery = "2.1.0"
-googlePlayAppUpdate = "2.1.0"
-googlePlayServicesAuth = "21.6.0"
-googlePlayServicesBase = "18.10.0"
-googlePlayServicesLocation = "21.3.0"
-
-# Google APIs
-googleHttpClientGson = "2.1.0"
-googleApiClientAndroid = "2.9.0"
-googleApiServicesDrive = "v3-rev197-1.25.0"
-
-# Firebase / Transport
-firebaseEncodersJson = "18.0.1"
-firebaseEncoders = "17.0.0"
-transportApi = "4.1.1"
-transportBackendCct = "4.1.1"
-transportRuntime = "4.1.1"
-
-# Guava
-guava = "33.6.0-android"
-
-# Networking
-jsch = "2.28.2"
-smbj = "0.14.0"
-
-# Bouncycastle
-bouncycastle = "1.84"
-
-# VLC
-libvlc = "3.7.2"
-
-# Desugar
-desugarJdkLibs = "2.1.5"
-
-# Misc
-javaxInject = "1"
-
-# Test
-junit4 = "4.13.2"
-junit5 = "6.1.0"
-robolectric = "4.16.1"
-androidxTestJunit = "1.3.0"
-androidxTestEspresso = "3.7.0"
-
+androidxCore = "1.15.0"
+androidxAnnotation = "1.9.1"
+androidxMedia = "1.7.0"
+androidxAppcompat = "1.7.0"
+androidxConstraintlayout = "2.2.1"
+androidxSwiperefreshlayout = "1.1.0"
+guava = "33.4.0-android"
+ndkVersion = "27.0.12077973"
 
 [libraries]
-googlePlayServicesLocation = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googlePlayServicesLocation" }
-# AndroidX
-androidxAnnotation                = { group = "androidx.annotation",               name = "annotation",                    version.ref = "androidxAnnotation" }
-androidxAppcompat                 = { group = "androidx.appcompat",                 name = "appcompat",                     version.ref = "androidxAppcompat" }
-androidxConstraintlayout          = { group = "androidx.constraintlayout",          name = "constraintlayout",              version.ref = "androidxConstraintlayout" }
-androidxCore                      = { group = "androidx.core",                      name = "core",                          version.ref = "androidxCore" }
-androidxFragment                  = { group = "androidx.fragment",                  name = "fragment",                      version.ref = "androidxFragment" }
-androidxLegacySupportCore         = { group = "androidx.legacy",                    name = "legacy-support-core-utils",     version.ref = "androidxLegacySupport" }
-androidxLocalbroadcastmanager     = { group = "androidx.localbroadcastmanager",     name = "localbroadcastmanager",         version.ref = "androidxLocalbroadcastmanager" }
-androidxMedia                     = { group = "androidx.media",                     name = "media",                         version.ref = "androidxMedia" }
-androidxSecurityCrypto            = { group = "androidx.security",                  name = "security-crypto",               version.ref = "androidxSecurityCrypto" }
-androidxSwiperefreshlayout        = { group = "androidx.swiperefreshlayout",        name = "swiperefreshlayout",            version.ref = "androidxSwiperefreshlayout" }
-androidxTvprovider                = { group = "androidx.tvprovider",                name = "tvprovider",                    version.ref = "androidxTvprovider" }
-androidxWebkit                    = { group = "androidx.webkit",                    name = "webkit",                        version.ref = "androidxWebkit" }
+androidxAppcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidxConstraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintlayout" }
+googlePlayFeatureDelivery = { module = "com.google.android.play:feature-delivery", version.ref = "googlePlayFeatureDelivery" }
+androidMaterial = { module = "com.google.android.material:material", version.ref = "androidMaterial" }
+androidxCore = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidxAnnotation = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotation" }
+androidxMedia = { module = "androidx.media:media", version.ref = "androidxMedia" }
+androidxWebkit = { module = "androidx.webkit:webkit", version = "1.12.1" }
+androidxSecurityCrypto = { module = "androidx.security:security-crypto", version = "1.1.0-alpha06" }
+androidxSwiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
+googlePlayServicesLocation = { module = "com.google.android.gms:play-services-location", version = "21.3.0" }
+googlePlayAppUpdate = { module = "com.google.android.play:app-update", version = "2.1.0" }
+androidxTvprovider = { module = "androidx.tvprovider:tvprovider", version = "1.0.0" }
+androidxLegacySupportCore = { module = "androidx.legacy:legacy-support-core-utils", version = "1.0.0" }
+androidxLocalbroadcastmanager = { module = "androidx.localbroadcastmanager:localbroadcastmanager", version = "1.1.0" }
+transportApi = { module = "com.google.android.datatransport:transport-api", version = "3.2.0" }
+transportBackendCct = { module = "com.google.android.datatransport:transport-backend-cct", version = "3.3.0" }
+transportRuntime = { module = "com.google.android.datatransport:transport-runtime", version = "3.3.0" }
+firebaseEncodersJson = { module = "com.google.firebase:firebase-encoders-json", version = "18.0.1" }
+firebaseEncoders = { module = "com.google.firebase:firebase-encoders", version = "17.0.0" }
+javaxInject = { module = "javax.inject:javax.inject", version = "1" }
+androidxCarApp = { module = "androidx.car.app:app", version = "1.4.0" }
 
-# AndroidX Car
-androidxCarApp                    = { group = "androidx.car.app",                   name = "app",                           version.ref = "androidxCar" }
+jsch = { module = "com.jcraft:jsch", version = "0.1.55" }
+smbj = { module = "com.hierynomus:smbj", version = "0.13.0" }
+bouncycastleProvider = { module = "org.bouncycastle:bcprov-jdk18on", version = "1.80" }
+bouncycastlePkix = { module = "org.bouncycastle:bcpkix-jdk18on", version = "1.80" }
+googlePlayServicesAuth = { module = "com.google.android.gms:play-services-auth", version = "21.3.0" }
+googlePlayServicesBase = { module = "com.google.android.gms:play-services-base", version = "18.5.0" }
+googleHttpClientGson = { module = "com.google.http-client:google-http-client-gson", version = "1.46.3" }
+googleApiClientAndroid = { module = "com.google.api-client:google-api-client-android", version = "2.7.2" }
+googleApiServicesDrive = { module = "com.google.apis:google-api-services-drive", version = "v3-rev20240730-2.0.0" }
 
-# AndroidX media3
-media3Exoplayer                   = { group = "androidx.media3",                    name = "media3-exoplayer",              version.ref = "media3" }
-media3ExoplayerHls                = { group = "androidx.media3",                    name = "media3-exoplayer-hls",          version.ref = "media3" }
-media3ExoplayerDash               = { group = "androidx.media3",                    name = "media3-exoplayer-dash",         version.ref = "media3" }
-media3DatasourceCronet            = { group = "androidx.media3",                    name = "media3-datasource-cronet",      version.ref = "media3" }
-media3Transformer                 = { group = "androidx.media3",                    name = "media3-transformer",            version.ref = "media3" }
-
-# Google
-androidMaterial                   = { group = "com.google.android.material",        name = "material",                      version.ref = "androidMaterial" }
-googlePlayFeatureDelivery         = { group = "com.google.android.play",            name = "feature-delivery",              version.ref = "googlePlayFeatureDelivery" }
-googlePlayAppUpdate               = { group = "com.google.android.play",            name = "app-update",                    version.ref = "googlePlayAppUpdate" }
-googlePlayServicesAuth            = { group = "com.google.android.gms",             name = "play-services-auth",            version.ref = "googlePlayServicesAuth" }
-googlePlayServicesBase            = { group = "com.google.android.gms",             name = "play-services-base",            version.ref = "googlePlayServicesBase" }
-
-# Google APIs
-googleHttpClientGson              = { group = "com.google.http-client",             name = "google-http-client-gson",       version.ref = "googleHttpClientGson" }
-googleApiClientAndroid            = { group = "com.google.api-client",              name = "google-api-client-android",     version.ref = "googleApiClientAndroid" }
-googleApiServicesDrive            = { group = "com.google.apis",                    name = "google-api-services-drive",     version.ref = "googleApiServicesDrive" }
-
-# Firebase / Transport
-firebaseEncodersJson              = { group = "com.google.firebase",                name = "firebase-encoders-json",        version.ref = "firebaseEncodersJson" }
-firebaseEncoders                  = { group = "com.google.firebase",                name = "firebase-encoders",             version.ref = "firebaseEncoders" }
-transportApi                      = { group = "com.google.android.datatransport",   name = "transport-api",                 version.ref = "transportApi" }
-transportBackendCct               = { group = "com.google.android.datatransport",   name = "transport-backend-cct",         version.ref = "transportBackendCct" }
-transportRuntime                  = { group = "com.google.android.datatransport",   name = "transport-runtime",             version.ref = "transportRuntime" }
-
-# Guava
-guava                             = { group = "com.google.guava",                   name = "guava",                         version.ref = "guava" }
-
-# Networking
-jsch                              = { group = "com.github.mwiede",                  name = "jsch",                          version.ref = "jsch" }
-smbj                              = { group = "com.hierynomus",                     name = "smbj",                          version.ref = "smbj" }
-
-# Bouncycastle
-bouncycastleProvider              = { group = "org.bouncycastle",                   name = "bcprov-jdk18on",                version.ref = "bouncycastle" }
-bouncycastlePkix                  = { group = "org.bouncycastle",                   name = "bcpkix-jdk18on",                version.ref = "bouncycastle" }
-
-# VLC
-libvlc                            = { group = "org.videolan.android",               name = "libvlc-all",                    version.ref = "libvlc" }
-
-# Desugar
-desugarJdkLibs                    = { group = "com.android.tools",                  name = "desugar_jdk_libs",              version.ref = "desugarJdkLibs" }
-
-# Misc
-javaxInject                       = { group = "javax.inject",                       name = "javax.inject",                  version.ref = "javaxInject" }
-
-# Test
-junit4                            = { group = "junit",                              name = "junit",                         version.ref = "junit4" }
-junit5Api                         = { group = "org.junit.jupiter",                  name = "junit-jupiter-api",             version.ref = "junit5" }
-junit5Engine                      = { group = "org.junit.jupiter",                  name = "junit-jupiter-engine",          version.ref = "junit5" }
-junit5Params                      = { group = "org.junit.jupiter",                  name = "junit-jupiter-params",          version.ref = "junit5" }
-junitPlatformLauncher             = { group = "org.junit.platform",                 name = "junit-platform-launcher",       version.ref = "junit5" }
-robolectric                       = { group = "org.robolectric",                    name = "robolectric",                    version.ref = "robolectric" }
-androidxTestJunit                 = { group = "androidx.test.ext",                  name = "junit",                         version.ref = "androidxTestJunit" }
-androidxTestEspresso              = { group = "androidx.test.espresso",             name = "espresso-core",                 version.ref = "androidxTestEspresso" }
-
-
-[plugins]
-android-application  = { id = "com.android.application",         version.ref = "agp" }
-android-library      = { id = "com.android.library",             version.ref = "agp" }
-android-dynamic      = { id = "com.android.dynamic-feature",     version.ref = "agp" }
-google-services      = { id = "com.google.gms.google-services",  version.ref = "googleServices" }
-
+desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
+junit4 = { module = "junit:junit", version = "4.13.2" }
+junit5Api = { module = "org.junit.jupiter:junit-jupiter-api", version = "5.11.4" }
+junit5Engine = { module = "org.junit.jupiter:junit-jupiter-engine", version = "5.11.4" }
+junit5Params = { module = "org.junit.jupiter:junit-jupiter-params", version = "5.11.4" }
+junitPlatformLauncher = { module = "org.junit.platform:junit-platform-launcher", version = "1.11.4" }
+androidxTestJunit = { module = "androidx.test.ext:junit", version = "1.2.1" }
+androidxTestEspresso = { module = "androidx.test.espresso:espresso-core", version = "3.6.1" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.14.1" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }

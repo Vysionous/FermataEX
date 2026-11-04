@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="appControlPanelStyle" format="reference" />
+    <attr name="appMediaItemStyle" format="reference" />
+    <attr name="appSeekBarStyle" format="reference" />
+    <attr name="appStreamProgressStyle" format="reference" />
+    <attr name="appVideoInfoStyle" format="reference" />
+    <attr name="iconColor" format="color|reference" />
+    <attr name="hintColor" format="color|reference" />
+
+    <declare-styleable name="ControlPanelView">
+        <attr name="textAppearance" format="reference" />
+        <attr name="android:colorBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="MediaItemView">
+        <attr name="iconColor" />
+        <attr name="hintColor" />
+        <attr name="titleTextAppearance" format="reference" />
+        <attr name="subtitleTextAppearance" format="reference" />
+        <attr name="elevation" format="dimension" />
+        <attr name="android:textColor" />
+    </declare-styleable>
+</resources>

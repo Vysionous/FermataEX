@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#2196F3</item>
+        <item name="colorPrimaryDark">#1976D2</item>
+        <item name="colorAccent">#4F9CFF</item>
+        <item name="appControlPanelStyle">@style/AppTheme.ControlPanelStyle</item>
+        <item name="appMediaItemStyle">@style/AppTheme.MediaItemStyle</item>
+        <item name="appSeekBarStyle">@style/Widget.AppCompat.SeekBar</item>
+        <item name="appStreamProgressStyle">@style/Widget.AppCompat.ProgressBar.Horizontal</item>
+        <item name="appVideoInfoStyle">@style/AppTheme.Dark</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">#1F1F1F</item>
+        <item name="colorPrimaryDark">#121212</item>
+        <item name="colorAccent">#4F9CFF</item>
+        <item name="android:windowBackground">#121212</item>
+        <item name="appControlPanelStyle">@style/AppTheme.ControlPanelStyle</item>
+        <item name="appMediaItemStyle">@style/AppTheme.MediaItemStyle</item>
+        <item name="appSeekBarStyle">@style/Widget.AppCompat.SeekBar</item>
+        <item name="appStreamProgressStyle">@style/Widget.AppCompat.ProgressBar.Horizontal</item>
+        <item name="appVideoInfoStyle">@style/AppTheme.Dark</item>
+    </style>
+
+    <style name="AppTheme.Classic" parent="AppTheme.Dark" />
+    <style name="AppTheme.MaterialYou" parent="AppTheme" />
+    <style name="AppTheme.Glass.Night" parent="AppTheme.Dark" />
+    <style name="AppTheme.Glass.Day" parent="AppTheme" />
+
+    <style name="AppTheme.ControlPanelStyle">
+        <item name="android:colorBackground">#DD1E1E1E</item>
+        <item name="textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="AppTheme.MediaItemStyle">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="iconColor">#4F9CFF</item>
+        <item name="hintColor">#888888</item>
+        <item name="titleTextAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="subtitleTextAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="elevation">2dp</item>
+    </style>
+
+    <style name="PhoneBottomMenuThemeOverlay" parent="ThemeOverlay.MaterialComponents.Dark">
+    </style>
+</resources>

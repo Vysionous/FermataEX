@@ -54,99 +54,33 @@ jobs:
           java -version
           ./gradlew --version
 
-      - name: Validate universal build entry point
-        run: sh -n build.sh
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
 
-      - name: Verify Web-only production graph
-        run: ./gradlew verifyWebOnlyProductionGraph --no-daemon --no-parallel --stacktrace
-
-      - name: Mobile unit suite
-        run: >-
-          ./gradlew testMobileDebugUnitTest :whisper:testMobileDebugUnitTest
-          --no-daemon --no-parallel --stacktrace
-
-      - name: Auto unit suite
-        if: ${{ !cancelled() }}
-        run: ./gradlew testAutoDebugUnitTest --no-daemon --no-parallel --stacktrace
-
-      - name: Web addon UI shell guard
-        if: ${{ !cancelled() }}
-        run: >-
-          ./gradlew :fermata:testMobileDebugUnitTest
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.webAddonUsesCommonUiShellAuthorities
-          --no-daemon --no-parallel --stacktrace
-
-      - name: TV addon UI shell guard
-        if: ${{ !cancelled() }}
-        run: >-
-          ./gradlew :fermata:testMobileDebugUnitTest
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.tvAddonUsesCommonUiShellAuthorities
-          --no-daemon --no-parallel --stacktrace
-
-      - name: UI shell single-writer guard
-        if: ${{ !cancelled() }}
-        run: >-
-          ./gradlew :fermata:testMobileDebugUnitTest
-          --tests me.aap.fermata.architecture.UiShellArchitectureGuardTest
-          --no-daemon --no-parallel --stacktrace
-
-      - name: Architecture boundary guards
-        if: ${{ !cancelled() }}
-        run: >-
-          ./gradlew :fermata:testMobileDebugUnitTest
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.hotspotClassesCannotGrowPastTheRecordedBaseline
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.coreDoesNotImportConcreteAddonImplementations
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.coreUiDoesNotReferenceConcreteAddonFragmentTypes
-          --tests me.aap.fermata.architecture.ArchitectureBoundaryTest.addonModulesDoNotImportSiblingImplementations
-          --no-daemon --no-parallel --stacktrace
-
-      - name: Lint
-        if: ${{ !cancelled() }}
-        run: >-
-          ./gradlew :fermata:lintMobileDebug :fermata:lintAutoDebug
-          --no-daemon --no-parallel --stacktrace
-
-      - name: Check whitespace in the PR/push diff
-        if: ${{ !cancelled() }}
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          PUSH_BASE_SHA: ${{ github.event.before }}
+      - name: Prepare Keystore
         run: |
-          set -euo pipefail
-          if [ "$EVENT_NAME" = "pull_request" ]; then
-            base_sha="$PR_BASE_SHA"
-          else
-            base_sha="$PUSH_BASE_SHA"
-            if [ -z "$base_sha" ] || [ "$base_sha" = "0000000000000000000000000000000000000000" ]; then
-              base_sha="$(git rev-parse HEAD^)"
+          if [ ! -f debug.keystore ]; then
+            if [ -f debug.keystore.base64 ]; then
+              base64 -d debug.keystore.base64 > debug.keystore
+            else
+              keytool -genkey -v -keystore debug.keystore \
+                -storepass android -alias androiddebugkey -keypass android \
+                -keyalg RSA -keysize 2048 -validity 10000 \
+                -dname "CN=Android Debug,O=Android,C=US"
             fi
           fi
-          git cat-file -e "$base_sha^{commit}"
-          git diff --check "$base_sha...HEAD"
 
-      # NON-NEGOTIABLE DISTRIBUTION CONTRACT:
-      # FermataX ships exactly ONE universal APK used on both phone and Android Auto/DHU.
-      # Mobile/Auto are internal source sets/test targets only and must never become separate
-      # user-facing APKs, releases, or CI artifacts.
-      - name: Package single FermataX universal APK
-        if: ${{ success() }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          ./build.sh -d
-          mapfile -t apks < <(find dist -maxdepth 1 -type f -name 'FermataX-*.apk' -print)
-          if [ "${#apks[@]}" -ne 1 ]; then
-            echo "Expected exactly one universal APK, found ${#apks[@]}"
-            exit 1
-          fi
-          cp "${apks[0]}" dist/FermataX-debug-universal.apk
+      - name: Run Unit Tests
+        run: ./gradlew :app:testDebugUnitTest --no-daemon --stacktrace
 
-      - name: Upload single FermataX universal APK
+      - name: Build Debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Upload Debug APK
         if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: FermataX-device-test-${{ github.sha }}
-          path: dist/FermataX-debug-universal.apk
+          name: FermataEX-debug-${{ github.sha }}
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7

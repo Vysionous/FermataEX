@@ -1,0 +1,106 @@
+if (gradle.ext.enableGoogleServices) apply plugin: 'com.google.gms.google-services'
+
+def defaultApplicationId = 'com.aistudio.fermatax.app'
+def configuredApplicationId = (rootProject.findProperty('APP_ID') ?: defaultApplicationId).toString()
+def youtubeAudioRestoreEnabled = project.getProperties()
+        .getOrDefault('YT_AUDIO_RESTORE', 'true').toString().toBoolean()
+def youtubeDiagnosticsEnabled = project.getProperties()
+        .getOrDefault('YT_DIAGNOSTICS', 'false').toString().toBoolean()
+def noBackgroundLocation = project.getProperties()
+        .getOrDefault('NO_BACKGROUND_LOCATION', 'false').toString().toBoolean()
+
+android {
+    namespace = 'me.aap.fermata'
+    testOptions.unitTests.includeAndroidResources = true
+
+    defaultConfig {
+        applicationId configuredApplicationId
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+        base.archivesName = "app"
+        buildConfigField "boolean", 'YT_AUDIO_RESTORE', "${youtubeAudioRestoreEnabled}"
+        buildConfigField "boolean", 'YT_DIAGNOSTICS', "${youtubeDiagnosticsEnabled}"
+        buildConfigField "boolean", 'TRIP_BACKGROUND_SUPPORTED', "${!noBackgroundLocation}"
+        buildConfigField "boolean", 'AUTO', "false"
+        buildConfigField "boolean", 'ENABLE_GS', "${gradle.ext.enableGoogleServices}"
+
+        resValue "string", "app_name", "@string/app_name"
+        resValue "string", "media_service_name", "@string/media_service_name"
+        resValue "drawable", "media_service_icon", "@drawable/launcher"
+        resValue "string", "mirror_service_name", "@string/mirror_service_name"
+        resValue "string", "app_name_auto", "@string/app_name_auto"
+        resValue "string", "app_name_mobile", "@string/app_name_mobile"
+        resValue "string", "media_service_name_auto", "@string/media_service_name_auto"
+        resValue "string", "media_service_name_mobile", "@string/media_service_name_mobile"
+    }
+
+    signingConfigs {
+        debugConfig {
+            storeFile file("${rootDir}/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            signingConfig signingConfigs.debugConfig
+            buildConfigField "boolean", 'D', 'false'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro', '../depends/utils/proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+            signingConfig signingConfigs.debugConfig
+            buildConfigField "boolean", 'D', 'true'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    if (noBackgroundLocation) {
+        sourceSets.debug.manifest.srcFile 'manifest-no-background-location/AndroidManifest.xml'
+        sourceSets.release.manifest.srcFile 'manifest-no-background-location/AndroidManifest.xml'
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/license.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/notice.txt', 'META-INF/ASL2.0', 'META-INF/INDEX.LIST']
+        }
+    }
+}
+
+dependencies {
+    implementation project(':utils')
+    implementation libs.androidxMedia
+    implementation libs.androidxAppcompat
+    implementation libs.androidxWebkit
+    implementation libs.androidMaterial
+    implementation libs.androidxSecurityCrypto
+    implementation libs.androidxConstraintlayout
+    implementation libs.androidxSwiperefreshlayout
+    implementation libs.googlePlayFeatureDelivery
+    implementation libs.googlePlayServicesLocation
+    implementation libs.googlePlayAppUpdate
+    implementation libs.androidxTvprovider
+    implementation libs.androidxAnnotation
+    implementation libs.androidxLegacySupportCore
+    implementation libs.androidxLocalbroadcastmanager
+    implementation libs.transportApi
+    implementation libs.transportBackendCct
+    implementation libs.transportRuntime
+    implementation libs.firebaseEncodersJson
+    implementation libs.firebaseEncoders
+    implementation libs.javaxInject
+    implementation libs.androidxCarApp
+    implementation files('lib/auto/aauto.aar')
+    compileOnly files('lib/auto/xposed-api-82.jar')
+    testImplementation libs.robolectric
+}

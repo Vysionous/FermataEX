@@ -1,0 +1,8 @@
+{
+  "name": "FermataEX",
+  "description": "Media player and audio hub for Android and Android Auto",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

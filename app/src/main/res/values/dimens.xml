@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dashboard_content_padding">16dp</dimen>
+    <dimen name="control_panel_edge_action_size">48dp</dimen>
+    <dimen name="control_panel_edge_action_padding">8dp</dimen>
+    <dimen name="control_panel_height">64dp</dimen>
+    <dimen name="control_panel_transport_height">48dp</dimen>
+    <dimen name="dashboard_tile_icon_padding">12dp</dimen>
+    <dimen name="dashboard_smart_height">160dp</dimen>
+    <dimen name="dashboard_smart_mobile_height">120dp</dimen>
+
+    <dimen name="control_panel_scrim_height">96dp</dimen>
+    <dimen name="control_panel_seek_track_height">4dp</dimen>
+    <dimen name="dashboard_card_margin">8dp</dimen>
+    <dimen name="dashboard_smart_action_gap">8dp</dimen>
+    <dimen name="dashboard_smart_action_height">40dp</dimen>
+    <dimen name="dashboard_smart_action_padding">8dp</dimen>
+    <dimen name="dashboard_smart_action_top_gap">8dp</dimen>
+    <dimen name="dashboard_smart_action_width">80dp</dimen>
+    <dimen name="dashboard_smart_actions_start_margin">16dp</dimen>
+    <dimen name="dashboard_smart_eyebrow_size">12sp</dimen>
+    <dimen name="dashboard_smart_icon_padding">8dp</dimen>
+    <dimen name="dashboard_smart_icon_size">32dp</dimen>
+    <dimen name="dashboard_smart_mobile_divider_gap">8dp</dimen>
+    <dimen name="dashboard_smart_mobile_recent_top_padding">8dp</dimen>
+    <dimen name="dashboard_smart_padding">16dp</dimen>
+    <dimen name="dashboard_smart_subtitle_size">14sp</dimen>
+    <dimen name="dashboard_smart_text_gap">4dp</dimen>
+    <dimen name="dashboard_smart_title_size">18sp</dimen>
+    <dimen name="dashboard_smart_v2_action_glyph_size">24dp</dimen>
+    <dimen name="dashboard_smart_v2_action_padding">8dp</dimen>
+    <dimen name="dashboard_smart_v2_compact_height">120dp</dimen>
+    <dimen name="dashboard_smart_v2_control_size">48dp</dimen>
+    <dimen name="dashboard_tile_height">80dp</dimen>
+    <dimen name="dashboard_tile_icon_size">40dp</dimen>
+    <dimen name="dashboard_tile_padding">12dp</dimen>
+    <dimen name="dashboard_tile_subtitle_size">14sp</dimen>
+    <dimen name="dashboard_tile_text_gap">4dp</dimen>
+    <dimen name="dashboard_tile_title_size">16sp</dimen>
+</resources>
